@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ExerciseHeaderView" customModule="iFit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7dS-fa-Eov">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzv-bB-6FB" customClass="IFLabel" customModule="iFit" customModuleProvider="target">
+                            <rect key="frame" x="10" y="0.0" width="255" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="H1K-NO-sB7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LsR-U9-DrJ">
+                            <rect key="frame" x="275" y="0.0" width="35" height="35"/>
+                            <state key="normal" image="editProfile"/>
+                            <connections>
+                                <action selector="btnEditExerciseClickedWithButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="vFq-Jk-0ke"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ky4-tR-rtn">
+                            <rect key="frame" x="320" y="0.0" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="S5W-0E-5Ed"/>
+                            </constraints>
+                            <state key="normal" image="delete"/>
+                            <connections>
+                                <action selector="btnDelteExerciseClickedWithButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="o2f-TV-eK2"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Vzv-bB-6FB" secondAttribute="bottom" priority="250" id="1Tm-MV-KKt"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="bottom" secondItem="LsR-U9-DrJ" secondAttribute="bottom" id="1cJ-ux-ujz"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="leading" secondItem="LsR-U9-DrJ" secondAttribute="trailing" constant="10" id="Aiy-p5-jMV"/>
+                        <constraint firstItem="LsR-U9-DrJ" firstAttribute="leading" secondItem="Vzv-bB-6FB" secondAttribute="trailing" constant="10" id="HAo-gv-6xz"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="top" secondItem="LsR-U9-DrJ" secondAttribute="top" id="Lhf-lv-UH1"/>
+                        <constraint firstAttribute="trailing" secondItem="ky4-tR-rtn" secondAttribute="trailing" constant="20" id="S80-o5-OQv"/>
+                        <constraint firstItem="Vzv-bB-6FB" firstAttribute="top" secondItem="7dS-fa-Eov" secondAttribute="top" id="VMT-RV-8nB"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="top" secondItem="Vzv-bB-6FB" secondAttribute="top" id="aEC-zb-KgQ"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="width" secondItem="LsR-U9-DrJ" secondAttribute="width" id="fS8-AY-JpZ"/>
+                        <constraint firstItem="ky4-tR-rtn" firstAttribute="bottom" secondItem="Vzv-bB-6FB" secondAttribute="bottom" id="q6r-tq-1k2"/>
+                        <constraint firstItem="Vzv-bB-6FB" firstAttribute="leading" secondItem="7dS-fa-Eov" secondAttribute="leading" constant="10" id="v3t-NP-EVO"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="7dS-fa-Eov" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="H4W-Hw-26R"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="7dS-fa-Eov" secondAttribute="trailing" id="Uhr-mf-2w6"/>
+                <constraint firstItem="7dS-fa-Eov" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="bSz-Hv-scb"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="7dS-fa-Eov" secondAttribute="bottom" id="z9y-f8-6fM"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="btnEdit" destination="LsR-U9-DrJ" id="U4J-Ca-xim"/>
+                <outlet property="lblExerciseTitle" destination="Vzv-bB-6FB" id="600-RJ-IP8"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="-54.422788605697157"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="delete" width="36" height="36"/>
+        <image name="editProfile" width="11" height="10.5"/>
+    </resources>
+</document>
