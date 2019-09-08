@@ -35,6 +35,18 @@ class IFExercise: NSObject,NSCoding {
             self.arySet = set
         }
     }
+    func deleteSetInExercise(withSet objSet:IFSet){
+        if let index:Int = self.arySet.index(of: objSet){
+            self.arySet.remove(at: index)
+        }
+        
+        for i in 0..<self.arySet.count {
+            let set:IFSet = self.arySet[i]
+            set.index = i+1
+            self.arySet[i] = set
+        }
+        
+    }
     func updateSetInExercise(withSet getSet:IFSet){
         var aryAllSet:[IFSet] = []
         let aryWarmupSet:[IFSet] = self.arySet.filter { (set) -> Bool in

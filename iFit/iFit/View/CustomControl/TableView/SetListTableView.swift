@@ -13,6 +13,8 @@ class SetListTableView: IFTableView {
     var arySetList:[IFSet] = []
     private var blockAddSetHandler:((String)->Void)?
     private var blockEditSetHandler:((IFSet,String)->Void)?
+    private var blockDeleteSetHandler:((IFSet)->Void)?
+    
     var exerciseTitle:String = ""
     
     override init(frame: CGRect, style: UITableView.Style) {
@@ -45,7 +47,7 @@ class SetListTableView: IFTableView {
         self.sectionHeaderHeight = UITableView.automaticDimension;
         self.estimatedSectionHeaderHeight = 25;
     }
-    func setTableViewData(withNotificationList list:[IFSet],withTitle title:String){
+    func setTableViewData(withSetList list:[IFSet],withTitle title:String){
         self.exerciseTitle = title
         self.arySetList = list
         self.delegate  = self
@@ -62,6 +64,12 @@ class SetListTableView: IFTableView {
             self.blockEditSetHandler = value
         }
     }
+    func setDeleteSetClick(withHandler handler:((IFSet)->Void)?){
+        if let value = handler {
+            self.blockDeleteSetHandler = value
+        }
+    }
+    
 }
 
 extension SetListTableView{
@@ -116,6 +124,12 @@ extension SetListTableView{
             guard let self = `self` else {return}
             if let handler = self.blockEditSetHandler{
                 handler(self.arySetList[indexPath.row],self.exerciseTitle)
+            }
+        }
+        cell.setDeleteSetActionHandler { [weak self](set) in
+            guard let self = `self` else {return}
+            if let handler = self.blockDeleteSetHandler{
+                handler(self.arySetList[indexPath.row])
             }
         }
         return cell

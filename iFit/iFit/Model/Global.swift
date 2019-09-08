@@ -13,7 +13,15 @@ struct Constant {
     struct  App {
         static let Name:String = "iFit"
     }
-    
+    struct ErrorMessage {
+       static let RemoveSetWarningMessage:String = "Are you sure you want to remove set?"
+       static let RemoveExerciseWarningMessage:String = "Are you sure you want to remove Exercise?"
+       static let AddExerciseTitleValidationMessage:String = "Please enter exercise Title!"
+       static let AddSetTitleValidationMessage:String = "Please enter set title!"
+       static let AddSetTypeValidationMessage:String = "Please select atleast one set type!"
+        static let AddExerciseInSetCountValidationMessage:String = "Please add one set in exercise!"
+        
+    }
 }
 
 enum SetType:String  {

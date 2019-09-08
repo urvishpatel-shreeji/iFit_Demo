@@ -17,6 +17,7 @@ class SetCell: UITableViewCell {
         }
     }
     private var blockEditSetActionHandler:((IFSet)->Void)?
+    private var blockDeleteSetActionHandler:((IFSet)->Void)?
     
     
     override func awakeFromNib() {
@@ -24,17 +25,12 @@ class SetCell: UITableViewCell {
         // Initialization code
         self.commonUI()
     }
-    
-    func commonUI(){
-        self.selectionStyle = .none
-        self.lblSetName.font = UIFont.appRegularFont(WithSize: 15.0)
-    }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
+    //MARK: - UI Methods
     func updateUI(){
         self.lblSetName.text = "\(self.objSet.strSetTitle) #\(self.objSet.index)"
         if self.objSet.setType == .Regular {
@@ -43,14 +39,29 @@ class SetCell: UITableViewCell {
             self.btnIndicator.tintColor = UIColor.appOrangeColor()
         }
     }
+    func commonUI(){
+        self.selectionStyle = .none
+        self.lblSetName.font = UIFont.appRegularFont(WithSize: 15.0)
+    }
+    //MARK: - Handler Method
     func setEditSetActionHandler(with handler:((IFSet)->Void)?) {
         if handler != nil {
             self.blockEditSetActionHandler = handler
         }
     }
-    
+    func setDeleteSetActionHandler(with handler:((IFSet)->Void)?) {
+        if handler != nil {
+            self.blockDeleteSetActionHandler = handler
+        }
+    }
+    //MARK: - Button Action
     @IBAction func btnEditSet_Clicked(sender:UIButton){
         if let handler = self.blockEditSetActionHandler {
+            handler(self.objSet)
+        }
+    }
+    @IBAction func btnDeleteSet_Clicked(sender:UIButton){
+        if let handler = self.blockDeleteSetActionHandler {
             handler(self.objSet)
         }
     }

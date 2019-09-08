@@ -55,6 +55,78 @@ class AddExerciseViewController: BaseViewController {
         // Do any additional setup after loading the view.
     }
     
+    //MARK: - UI Update
+    private func setupUI(){
+        self.title = "Add Exercise"
+        self.aryLeftMenuItem = [.Back];
+        self.aryRightMenuItem = [.Done];
+        
+        self.tableViewHandler()
+        self.tblSetList.setTableViewData(withSetList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
+        
+        
+    }
+    //MARK: - Handler Events
+    private func tableViewHandler(){
+        self.tblSetList.setDeleteSetClick { [weak self ] (set) in
+            guard let self = `self` else {return}
+            
+            IFAlertView.showAlert(withType: .actionSheet, withMessage: Constant.ErrorMessage.RemoveSetWarningMessage, withButtons: ["Yes","Cancel"], withCompletion: { (index) in
+                if index == 0{
+                    self.objExercise.deleteSetInExercise(withSet: set)
+                    
+                    self.tblSetList.setTableViewData(withSetList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
+                    IFExerciseManager.shared.saveUserDetails()
+                }
+            })
+        }
+        self.tblSetList.setEditSetClick {[weak self ] (set,title) in
+            guard let self = `self` else {return}
+            
+            self.objExercise.strTitle = title
+            let addSetPopup = AddSetPopup.init(nibName: "AddSetPopup", bundle: nil)
+            addSetPopup.viewControllerOpration = .Edit(set: set)
+            
+            let objPopup = PopupDialog.init(viewController: addSetPopup, buttonAlignment: .vertical, transitionStyle: .bounceUp, tapGestureDismissal: false  , completion: nil)
+            let containerAppearance = PopupDialogContainerView.appearance()
+            containerAppearance.cornerRadius = 20.0
+            addSetPopup.setBlockAddSetHandler(handler: {[weak self] (objSet,vcType) in
+                guard let self = `self` else {return}
+                if vcType == SetViewControllerOperation.Add(index: self.objExercise.arySet.count){
+                    self.objExercise.addSetInExercise(withSet: objSet)
+                }else {
+                    self.objExercise.updateSetInExercise(withSet: objSet)
+                }
+                self.tblSetList.setTableViewData(withSetList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
+            })
+            self.present(objPopup, animated: true, completion: nil)
+            
+            
+        }
+        self.tblSetList.getAddSetClick {
+            [weak self] (title)in
+            guard let self = `self` else {return}
+            self.objExercise.strTitle = title
+            
+            let addSetPopup = AddSetPopup.init(nibName: "AddSetPopup", bundle: nil)
+            addSetPopup.viewControllerOpration = .Add(index: self.objExercise.arySet.count)
+            
+            let objPopup = PopupDialog.init(viewController: addSetPopup, buttonAlignment: .vertical, transitionStyle: .bounceUp, tapGestureDismissal: false  , completion: nil)
+            let containerAppearance = PopupDialogContainerView.appearance()
+            containerAppearance.cornerRadius = 20.0
+            addSetPopup.setBlockAddSetHandler(handler: {[weak self] (objSet,vcType) in
+                guard let self = `self` else {return}
+                if vcType == SetViewControllerOperation.Add(index: self.objExercise.arySet.count){
+                    self.objExercise.addSetInExercise(withSet: objSet)
+                }else {
+                    
+                }
+                self.tblSetList.setTableViewData(withSetList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
+            })
+            self.present(objPopup, animated: true, completion: nil)
+        }
+    }
+    
     //MARK: - Navigation MEthods
     override func navigation_DoneButton_Action() {
         if self.type == .Add{
@@ -79,76 +151,19 @@ class AddExerciseViewController: BaseViewController {
         var strTitle:String = self.objExercise.strTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if strTitle.count <= 0 {
             isSuccess = false
-            IFAlertView.showAlert(withType: .alert, withMessage: "Please Enter Exercise Title!", withButtons: ["Ok"]) { (index) in
+            IFAlertView.showAlert(withType: .alert, withMessage: Constant.ErrorMessage.AddExerciseTitleValidationMessage, withButtons: ["Ok"]) { (index) in
                 
             }
         }
         else if self.objExercise.arySet.count <= 0 {
             isSuccess = false
-            IFAlertView.showAlert(withType: .alert, withMessage: "Please Add Sets!", withButtons: ["Ok"]) { (index) in
+            IFAlertView.showAlert(withType: .alert, withMessage: Constant.ErrorMessage.AddExerciseInSetCountValidationMessage, withButtons: ["Ok"]) { (index) in
                 
             }
         }
         return isSuccess
     }
-    //MARK : - UI Update
-    private func setupUI(){
-        self.title = "Add Exercise"
-        self.aryLeftMenuItem = [.Back];
-        self.aryRightMenuItem = [.Done];
-        
-        self.tableViewHandler()
-        self.tblSetList.setTableViewData(withNotificationList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
-        
-        
-    }
-    private func tableViewHandler(){
-        self.tblSetList.setEditSetClick {[weak self ] (set,title) in
-             guard let self = `self` else {return}
-            
-            self.objExercise.strTitle = title
-            let addSetPopup = AddSetPopup.init(nibName: "AddSetPopup", bundle: nil)
-            addSetPopup.viewControllerOpration = .Edit(set: set)
-            
-            let objPopup = PopupDialog.init(viewController: addSetPopup, buttonAlignment: .vertical, transitionStyle: .bounceUp, tapGestureDismissal: false  , completion: nil)
-            let containerAppearance = PopupDialogContainerView.appearance()
-            containerAppearance.cornerRadius = 20.0
-            addSetPopup.setBlockAddSetHandler(handler: {[weak self] (objSet,vcType) in
-                guard let self = `self` else {return}
-                if vcType == SetViewControllerOperation.Add(index: self.objExercise.arySet.count){
-                    self.objExercise.addSetInExercise(withSet: objSet)
-                }else {
-                     self.objExercise.updateSetInExercise(withSet: objSet)
-                }
-                self.tblSetList.setTableViewData(withNotificationList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
-            })
-            self.present(objPopup, animated: true, completion: nil)
-            
-            
-        }
-        self.tblSetList.getAddSetClick {
-            [weak self] (title)in
-            guard let self = `self` else {return}
-            self.objExercise.strTitle = title
-            
-            let addSetPopup = AddSetPopup.init(nibName: "AddSetPopup", bundle: nil)
-            addSetPopup.viewControllerOpration = .Add(index: self.objExercise.arySet.count)
-            
-            let objPopup = PopupDialog.init(viewController: addSetPopup, buttonAlignment: .vertical, transitionStyle: .bounceUp, tapGestureDismissal: false  , completion: nil)
-            let containerAppearance = PopupDialogContainerView.appearance()
-            containerAppearance.cornerRadius = 20.0
-            addSetPopup.setBlockAddSetHandler(handler: {[weak self] (objSet,vcType) in
-                guard let self = `self` else {return}
-                if vcType == SetViewControllerOperation.Add(index: self.objExercise.arySet.count){
-                    self.objExercise.addSetInExercise(withSet: objSet)
-                }else {
-                    
-                }
-                self.tblSetList.setTableViewData(withNotificationList: self.objExercise.arySet,withTitle: self.objExercise.strTitle)
-            })
-            self.present(objPopup, animated: true, completion: nil)
-        }
-    }
+    
     
     // MARK: - Initialise
     class func InstantiateViewController()->AddExerciseViewController?{
@@ -160,14 +175,6 @@ class AddExerciseViewController: BaseViewController {
         return nil
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+   
 
 }

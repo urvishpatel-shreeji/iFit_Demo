@@ -15,13 +15,25 @@ class ExerciseListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         self.setupUI()
-      self.tableViewHandler()
+        self.tableViewHandler()
         // Do any additional setup after loading the view.
     }
-    func tableViewHandler(){
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tblExercise.setTableViewData(withExerciseList: IFExerciseManager.shared.aryExercise)
+        
+    }
+    //MARK: - UI
+    private func setupUI(){
+        self.title = "Exercise"
+        self.aryLeftMenuItem = []
+        self.aryRightMenuItem = [.Add];
+        
+    }
+    //MARK: - Handler Methods
+    private func tableViewHandler(){
         self.tblExercise.setEditExerciseClick { [weak self] (exercise) in
             guard let self = `self` else {return}
             
@@ -35,17 +47,18 @@ class ExerciseListViewController: BaseViewController {
         self.tblExercise.setDeleteExerciseClick(withHandler: { [weak self] (index) in
             guard let self = `self` else {return}
             
-            IFAlertView.showAlert(withType: .actionSheet, withMessage: "Are you sure you want to remove?", withButtons: ["Yes","Cancel"], withCompletion: { (index) in
+            IFAlertView.showAlert(withType: .actionSheet, withMessage: Constant.ErrorMessage.RemoveExerciseWarningMessage, withButtons: ["Yes","Cancel"], withCompletion: { (index) in
                 if index == 0 {
                     IFExerciseManager.shared.aryExercise.remove(at: index)
                     IFExerciseManager.shared.saveUserDetails()
-                     self.tblExercise.setTableViewData(withNotificationList: IFExerciseManager.shared.aryExercise)
+                    self.tblExercise.setTableViewData(withExerciseList: IFExerciseManager.shared.aryExercise)
                 }
             })
         })
+        
         self.tblExercise.setEditSetClick { [weak self] (exercise,set, title) in
             guard let self = `self` else {return }
-        
+            
             let addSetPopup = AddSetPopup.init(nibName: "AddSetPopup", bundle: nil)
             addSetPopup.viewControllerOpration = .Edit(set: set)
             
@@ -56,26 +69,27 @@ class ExerciseListViewController: BaseViewController {
                 guard let self = `self` else {return}
                 
                 exercise.updateSetInExercise(withSet: objSet)
-               self.tblExercise.setTableViewData(withNotificationList: IFExerciseManager.shared.aryExercise)
-            
+                self.tblExercise.setTableViewData(withExerciseList: IFExerciseManager.shared.aryExercise)
+                
             })
             self.present(objPopup, animated: true, completion: nil)
         }
         
+        self.tblExercise.setDeleteSetClick { [weak self] (exercise, set) in
+            guard let self = `self` else {return }
+            IFAlertView.showAlert(withType: .actionSheet, withMessage: Constant.ErrorMessage.RemoveSetWarningMessage, withButtons: ["Yes","Cancel"], withCompletion: { (index) in
+                if index == 0 {
+                    exercise.deleteSetInExercise(withSet: set)
+                    self.tblExercise.setTableViewData(withExerciseList: IFExerciseManager.shared.aryExercise)
+                    IFExerciseManager.shared.saveUserDetails()
+                }
+            })
+            
+        }
         
         
     }
-    func setupUI(){
-        self.title = "Exercise"
-        self.aryLeftMenuItem = []
-        self.aryRightMenuItem = [.Add];
-    
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tblExercise.setTableViewData(withNotificationList: IFExerciseManager.shared.aryExercise)
-        
-    }
+    //MARK: - Navigation Button Event
     override func navigation_AddButton_Action() {
         if let objAddExercise:AddExerciseViewController = AddExerciseViewController.InstantiateViewController()
         {
@@ -83,6 +97,7 @@ class ExerciseListViewController: BaseViewController {
            self.navigationController?.pushViewController(objAddExercise, animated: true )
         }
     }
+    // MARK: - Initialize
     class func InstantiateViewController()->ExerciseListViewController?{
         
         let storyboard:UIStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
@@ -91,15 +106,6 @@ class ExerciseListViewController: BaseViewController {
         }
         return nil
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+   
 
 }

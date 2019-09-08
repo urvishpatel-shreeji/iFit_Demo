@@ -15,6 +15,7 @@ class ExerciseListTableView: IFTableView {
     private var blockEditExerciseHandler:((IFExercise)->Void)?
     private var blockDeleteExerciseHandler:((Int)->Void)?
     private var blockEditSetHandler:((IFExercise,IFSet,String)->Void)?
+    private var blockDeleteSetHandler:((IFExercise,IFSet)->Void)?
     
     
     override init(frame: CGRect, style: UITableView.Style) {
@@ -44,7 +45,7 @@ class ExerciseListTableView: IFTableView {
         self.sectionHeaderHeight = UITableView.automaticDimension;
         self.estimatedSectionHeaderHeight = 25;
     }
-    func setTableViewData(withNotificationList list:[IFExercise]){
+    func setTableViewData(withExerciseList list:[IFExercise]){
         
         self.aryExerciseList = list
         self.delegate  = self
@@ -69,6 +70,11 @@ class ExerciseListTableView: IFTableView {
     func setEditSetClick(withHandler handler:((IFExercise,IFSet,String)->Void)?){
         if let value = handler {
             self.blockEditSetHandler = value
+        }
+    }
+    func setDeleteSetClick(withHandler handler:((IFExercise,IFSet)->Void)?){
+        if let value = handler {
+            self.blockDeleteSetHandler = value
         }
     }
 }
@@ -122,6 +128,12 @@ extension ExerciseListTableView{
             guard let self = `self` else {return}
             if let handler = self.blockEditSetHandler{
                 handler(self.aryExerciseList[indexPath.section],self.aryExerciseList[indexPath.section].arySet[indexPath.row],self.aryExerciseList[indexPath.section].strTitle)
+            }
+        }
+        cell.setDeleteSetActionHandler { [weak self](set) in
+            guard let self = `self` else {return}
+            if let handler = self.blockDeleteSetHandler{
+                handler(self.aryExerciseList[indexPath.section],set)
             }
         }
         

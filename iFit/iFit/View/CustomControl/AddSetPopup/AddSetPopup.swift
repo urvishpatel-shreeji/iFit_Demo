@@ -79,10 +79,17 @@ class AddSetPopup: BaseViewController {
     }
 
     func setupUI(){
-        self.txtTitle.placeholder = "Set Title"
         
-        self.lblPopupTitle.text = "Add Set"
-        self.btnAddSet.setTitle("Add Set", for: .normal)
+        if self.viewControllerOpration == SetViewControllerOperation.Add(index: self.objSet.id){
+            self.lblPopupTitle.text = "Add Set"
+            self.btnAddSet.setTitle("Add Set", for: .normal)
+            self.txtTitle.placeholder = "Set Title"
+            
+        }else{
+            self.lblPopupTitle.text = "Update Set"
+            self.btnAddSet.setTitle("Update Set", for: .normal)
+            self.txtTitle.placeholder = "Set Title"
+        }
         
         
         self.txtTitle.text = self.objSet.strSetTitle
@@ -99,12 +106,12 @@ class AddSetPopup: BaseViewController {
         strTitle = strTitle.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if strTitle.count <= 0 {
             isSuccess = false
-            IFAlertView.showAlert(withType: .alert, withMessage: "Please Enter Title!", withButtons: ["Ok"]) { (index) in
+            IFAlertView.showAlert(withType: .alert, withMessage: Constant.ErrorMessage.AddSetTitleValidationMessage, withButtons: ["Ok"]) { (index) in
                 
             }
         }else if self.setTypeSelection == .none{
             isSuccess = false
-            IFAlertView.showAlert(withType: .alert, withMessage: "Please Select Set Type!", withButtons: ["Ok"]) { (index) in
+            IFAlertView.showAlert(withType: .alert, withMessage: Constant.ErrorMessage.AddSetTypeValidationMessage, withButtons: ["Ok"]) { (index) in
                 
             }
         }
